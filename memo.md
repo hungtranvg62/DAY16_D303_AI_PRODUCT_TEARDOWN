@@ -1,7 +1,14 @@
 
 # Memo Teardown — CANVA
 
-**Nhóm:** D303 · **Thành viên:** …
+**Nhóm:** JCungDuoc · **Lớp:** D303
+
+| # | Thành viên | Mã học viên |
+|---|---|---|
+| 1 | Trần Vương Hưng | 2A202601789 |
+| 2 | Lê Hoàng Việt | 2A202601543 |
+| 3 | Tạ Thị Nga | 2A202601125 |
+| 4 | Hồ Phạm Đức Linh | 2A202601533 |
 
 ## Vì sao chọn sản phẩm này
 
