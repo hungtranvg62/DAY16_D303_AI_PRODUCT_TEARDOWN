@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Canva — AI Product Teardown · Nhóm JCungDuoc</title>
+<style>
+  @page { size: 13.333in 7.5in; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root{
+    --cyan:#00C4CC;
+    --purple:#7D2AE8;
+    --violet:#8B3DFF;
+    --ink:#0E1318;
+    --body:#3C4A52;
+    --mute:#7A8A93;
+    --line:#E4E8EB;
+    --wash:#F6F7F9;
+    --coral:#FF5F5F;
+    --amber:#FFB020;
+    --green:#00A88F;
+  }
+
+  html,body{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    color:var(--body); background:#fff;
+  }
+
+  .slide{
+    width:13.333in; height:7.5in; position:relative; overflow:hidden;
+    page-break-after:always; break-after:page;
+    padding:0.62in 0.78in 0.55in;
+    display:flex; flex-direction:column;
+    background:#fff;
+  }
+  .slide:last-child{ page-break-after:auto; }
+
+  /* top hairline gradient */
+  .slide::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:7px;
+    background:linear-gradient(90deg,var(--cyan) 0%,#39A0E8 45%,var(--purple) 100%);
+  }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:.42rem;
+    font-size:11.5pt; font-weight:700; letter-spacing:.10em; text-transform:uppercase;
+    color:var(--purple); margin-bottom:.14in;
+  }
+  .eyebrow .dot{ width:8px;height:8px;border-radius:50%;
+    background:linear-gradient(135deg,var(--cyan),var(--purple)); }
+
+  h1{ font-size:30pt; line-height:1.14; color:var(--ink); font-weight:800; letter-spacing:-.015em; }
+  h2{ font-size:25pt; line-height:1.16; color:var(--ink); font-weight:800; letter-spacing:-.012em; }
+  .sub{ font-size:12.5pt; color:var(--mute); margin-top:.10in; font-weight:500; }
+
+  .rule{ height:3px; width:62px; border-radius:2px; margin:.16in 0 .22in;
+    background:linear-gradient(90deg,var(--cyan),var(--purple)); }
+
+  .body{ flex:1; min-height:0; }
+
+  ul{ list-style:none; }
+  li{ position:relative; padding-left:1.05rem; margin-bottom:.52rem; font-size:12.5pt; line-height:1.44; }
+  li::before{ content:""; position:absolute; left:0; top:.52em; width:7px;height:7px;border-radius:2px;
+    background:linear-gradient(135deg,var(--cyan),var(--purple)); }
+  b,strong{ color:var(--ink); font-weight:700; }
+  em{ color:var(--purple); font-style:normal; font-weight:600; }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:.30in; height:100%; }
+  .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:.24in; }
+  .grid4{ display:grid; grid-template-columns:repeat(4,1fr); gap:.20in; }
+
+  .card{ border:1.5px solid var(--line); border-radius:14px; padding:.26in .28in; background:#fff; }
+  .card.tint{ background:var(--wash); border-color:transparent; }
+  .card h3{ font-size:13pt; color:var(--ink); font-weight:800; margin-bottom:.10in; }
+  .card p{ font-size:11.5pt; line-height:1.42; }
+  .card .tag{ font-size:9.5pt; font-weight:800; letter-spacing:.07em; text-transform:uppercase;
+    color:var(--purple); display:block; margin-bottom:.07in; }
+
+  /* ---------- title slide ---------- */
+  .cover{ justify-content:center; align-items:flex-start; padding-left:1.05in;
+    background:
+      radial-gradient(1100px 620px at 88% 8%, rgba(0,196,204,.16), transparent 62%),
+      radial-gradient(950px 560px at 8% 96%, rgba(125,42,232,.15), transparent 60%),
+      #fff; }
+  .cover h1{ font-size:52pt; line-height:1.05; letter-spacing:-.028em; }
+  .brandmark{ font-size:15pt; font-weight:800; letter-spacing:.20em; text-transform:uppercase;
+    background:linear-gradient(90deg,var(--cyan),var(--purple));
+    -webkit-background-clip:text; background-clip:text; color:transparent; margin-bottom:.24in; }
+  .cover .lede{ font-size:15pt; color:var(--body); margin-top:.30in; max-width:8.4in; line-height:1.5; }
+  .cover .meta{ margin-top:.52in; font-size:12.5pt; color:var(--mute); font-weight:600; }
+  .chipline{ display:flex; gap:.5rem; margin-top:.34in; flex-wrap:wrap; }
+  .chip{ font-size:10.5pt; font-weight:700; padding:.30rem .78rem; border-radius:999px;
+    background:var(--wash); color:var(--body); border:1.5px solid var(--line); }
+
+  /* ---------- timeline ---------- */
+  .tl{ display:grid; grid-template-columns:repeat(4,1fr); gap:.20in .22in; }
+  .tl .n{ border-radius:13px; padding:.22in .22in .24in; background:var(--wash); position:relative;
+    border-top:4px solid transparent; }
+  .tl .n .when{ font-size:11.5pt; font-weight:800; color:var(--ink); }
+  .tl .n .what{ font-size:11pt; font-weight:700; color:var(--purple); margin:.05in 0 .07in; line-height:1.3; }
+  .tl .n .why{ font-size:10pt; line-height:1.36; color:var(--body); }
+  .tl .n:nth-child(1){ border-top-color:#00C4CC }
+  .tl .n:nth-child(2){ border-top-color:#12B3D6 }
+  .tl .n:nth-child(3){ border-top-color:#28A2E0 }
+  .tl .n:nth-child(4){ border-top-color:#4B8DE8 }
+  .tl .n:nth-child(5){ border-top-color:#6474EC }
+  .tl .n:nth-child(6){ border-top-color:#7A5AEC }
+  .tl .n:nth-child(7){ border-top-color:#8843EA }
+  .tl .n:nth-child(8){ border-top-color:#7D2AE8 }
+
+  /* ---------- moat ladder ---------- */
+  .ladder{ display:flex; flex-direction:column; gap:.13in; }
+  .step{ display:grid; grid-template-columns:.85in 2.5in 1fr; align-items:center; gap:.22in;
+    padding:.17in .26in; border-radius:11px; color:#fff; }
+  .step .yr{ font-size:14pt; font-weight:800; }
+  .step .layer{ font-size:11.5pt; font-weight:700; opacity:.95; }
+  .step .moat{ font-size:11.5pt; }
+  .s1{ background:#00C4CC } .s2{ background:#2AA6DD } .s3{ background:#5583E6 }
+  .s4{ background:#7A55EA } .s5{ background:#7D2AE8 }
+
+  /* ---------- compare ---------- */
+  .cmp{ display:grid; grid-template-columns:1.15in 1fr 1fr; gap:0; border-radius:14px; overflow:hidden;
+    border:1.5px solid var(--line); }
+  .cmp>div{ padding:.17in .21in; border-bottom:1px solid var(--line); font-size:11pt; line-height:1.4; }
+  .cmp .hd{ font-weight:800; color:#fff; font-size:11.5pt; border-bottom:none; }
+  .cmp .hd.a{ background:linear-gradient(135deg,#00C4CC,#2AA6DD) }
+  .cmp .hd.b{ background:linear-gradient(135deg,#7A55EA,#7D2AE8) }
+  .cmp .hd.blank{ background:var(--ink) }
+  .cmp .lb{ font-weight:800; color:var(--ink); background:var(--wash); font-size:10.5pt; }
+  .cmp>div:nth-last-child(-n+3){ border-bottom:none; }
+
+  /* ---------- forces ---------- */
+  .forces{ display:grid; grid-template-columns:1fr 1fr; gap:.20in; }
+  .force{ border-radius:12px; padding:.20in .24in; border-left:5px solid; background:var(--wash); }
+  .force h4{ font-size:11.5pt; font-weight:800; color:var(--ink); margin-bottom:.06in; }
+  .force p{ font-size:10.5pt; line-height:1.4; }
+  .f-push{ border-color:var(--coral) } .f-pull{ border-color:var(--amber) }
+  .f-anx{ border-color:var(--cyan) }  .f-inr{ border-color:var(--purple) }
+
+  .callout{ margin-top:.22in; border-radius:12px; padding:.20in .26in;
+    background:linear-gradient(135deg,rgba(0,196,204,.10),rgba(125,42,232,.10));
+    border:1.5px solid rgba(125,42,232,.22); font-size:11.5pt; line-height:1.45; }
+  .callout b{ color:var(--purple); }
+
+  /* ---------- predictions ---------- */
+  .pred{ display:grid; grid-template-columns:repeat(3,1fr); gap:.22in; }
+  .pred .p{ border:1.5px solid var(--line); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; }
+  .pred .p .top{ padding:.15in .22in; color:#fff; font-size:10pt; font-weight:800;
+    letter-spacing:.05em; text-transform:uppercase; }
+  .pred .p:nth-child(1) .top{ background:linear-gradient(135deg,#00C4CC,#2AA6DD) }
+  .pred .p:nth-child(2) .top{ background:linear-gradient(135deg,#5583E6,#7A55EA) }
+  .pred .p:nth-child(3) .top{ background:linear-gradient(135deg,#8843EA,#7D2AE8) }
+  .pred .p .in{ padding:.20in .22in; flex:1; }
+  .pred .p h3{ font-size:12pt; color:var(--ink); font-weight:800; line-height:1.28; margin-bottom:.10in; }
+  .pred .p p{ font-size:10.5pt; line-height:1.4; }
+  .pred .p .ev{ margin-top:.12in; font-size:9.5pt; color:var(--mute); font-weight:600; }
+
+  /* ---------- members ---------- */
+  .mem{ border:1.5px solid var(--line); border-radius:14px; padding:.26in .24in; text-align:left;
+    display:flex; flex-direction:column; }
+  .mem .av{ width:38px;height:38px;border-radius:11px; margin-bottom:.14in;
+    background:linear-gradient(135deg,var(--cyan),var(--purple));
+    color:#fff; font-weight:800; font-size:14pt; display:flex; align-items:center; justify-content:center; }
+  .mem .nm{ font-size:13pt; font-weight:800; color:var(--ink); line-height:1.2; }
+  .mem .id{ font-size:10pt; color:var(--mute); font-weight:600; margin:.05in 0 .12in; }
+  .mem .role{ font-size:10.5pt; line-height:1.4; }
+
+  /* ---------- ai log ---------- */
+  .ailog{ display:grid; grid-template-columns:1.05fr 1fr; gap:.26in; }
+  .lg{ border-radius:13px; padding:.22in .26in; }
+  .lg.ai{ background:linear-gradient(135deg,rgba(0,196,204,.12),rgba(0,196,204,.05)); }
+  .lg.us{ background:linear-gradient(135deg,rgba(125,42,232,.12),rgba(125,42,232,.05)); }
+  .lg h3{ font-size:13pt; font-weight:800; color:var(--ink); margin-bottom:.12in; }
+  .lg li{ font-size:11pt; margin-bottom:.34rem; }
+
+  .rej{ margin-top:.20in; display:grid; grid-template-columns:repeat(3,1fr); gap:.18in; }
+  .rej div{ border:1.5px solid rgba(255,95,95,.35); background:rgba(255,95,95,.06);
+    border-radius:11px; padding:.16in .20in; font-size:10.5pt; line-height:1.38; }
+  .rej div>b:first-child{ color:var(--coral); display:block; margin-bottom:.05in; font-size:10pt;
+    text-transform:uppercase; letter-spacing:.05em; }
+  .rej b{ color:var(--ink); }
+
+  .foot{ position:absolute; left:.78in; right:.78in; bottom:.30in;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:9.5pt; color:var(--mute); font-weight:600;
+    border-top:1px solid var(--line); padding-top:.13in; }
+
+  /* closing */
+  .close{ justify-content:center;
+    background:radial-gradient(1000px 600px at 50% 50%, rgba(0,196,204,.13), transparent 60%),#fff; }
+  .close h2{ font-size:34pt; max-width:10.4in; line-height:1.2; }
+</style>
+</head>
+<body>
+
+<!-- 1 · COVER -->
+<section class="slide cover">
+  <div class="brandmark">AI Product Teardown</div>
+  <h1>Canva</h1>
+  <p class="lede">Từ một <strong>wrapper gọi API OpenAI</strong> (Magic Write, 12/2022) đến <strong>tự train model rẻ hơn frontier 30 lần</strong> (Canva AI 2.0, 04/2026) — trọn cung đường AI trong 41 tháng.</p>
+  <div class="chipline">
+    <span class="chip">8 cột mốc</span>
+    <span class="chip">2 tệp user · trước / sau AI</span>
+    <span class="chip">3 dự đoán 6–12 tháng</span>
+    <span class="chip">56 nguồn đã rà</span>
+  </div>
+  <div class="meta">Nhóm <strong>JCungDuoc</strong> · Lớp D303</div>
+</section>
+
+<!-- 2 · MEMBERS -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Thành viên</div>
+  <h2>Nhóm JCungDuoc</h2>
+  <div class="rule"></div>
+  <div class="body">
+    <div class="grid4">
+      <div class="mem"><div class="av">H</div>
+        <div class="nm">Trần Vương Hưng</div><div class="id">2A202601789 · Trưởng nhóm</div>
+        <div class="role">Kiến trúc memo · Sợi chỉ xuyên suốt · mốc <b>07/2025 MCP</b> &amp; <b>04/2026 AI 2.0</b> · điều phối §3</div></div>
+      <div class="mem"><div class="av">V</div>
+        <div class="nm">Lê Hoàng Việt</div><div class="id">2A202601543</div>
+        <div class="role">Mốc <b>10/2023 Magic Studio</b> &amp; <b>03–05/2024 Affinity + Enterprise</b> · phân tích 4 Forces</div></div>
+      <div class="mem"><div class="av">N</div>
+        <div class="nm">Tạ Thị Nga</div><div class="id">2A202601125</div>
+        <div class="role">Mốc <b>09/2022 Visual Worksuite</b> &amp; <b>12/2022 Magic Write</b> · chân dung tệp user · bảng JTBD</div></div>
+      <div class="mem"><div class="av">L</div>
+        <div class="nm">Hồ Phạm Đức Linh</div><div class="id">2A202601533</div>
+        <div class="role">Mốc <b>07–09/2024 Leonardo + tăng giá</b> &amp; <b>30/10/2025 Creative OS</b> · case lùi giá · pricing</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Canva — AI Product Teardown</span><span>02</span></div>
+</section>
+
+<!-- 3 · CP0 -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Checkpoint 0 · Chọn sản phẩm</div>
+  <h2>Vì sao chọn Canva?</h2>
+  <div class="rule"></div>
+  <div class="body">
+    <div class="grid3">
+      <div class="card tint"><span class="tag">Lý do chính</span>
+        <h3>Đi trọn cung đường AI</h3>
+        <p>41 tháng: wrapper gọi API OpenAI → tự train model riêng. Hầu hết sản phẩm khác chỉ cho xem <em>một đoạn</em>; Canva cho xem <em>cả hai đầu</em>, mốc thời gian công khai kiểm chứng được.</p></div>
+      <div class="card tint"><span class="tag">Lý do 2</span>
+        <h3>Có thí nghiệm thất bại</h3>
+        <p>Tăng giá Teams <b>+300%</b> (09/2024) rồi phải <b>lùi giá</b> 5 tuần sau. Một phép đo switching cost ngoài đời thật — thứ case study "toàn thắng" không bao giờ có.</p></div>
+      <div class="card tint"><span class="tag">Lý do 3</span>
+        <h3>Bị AI đe doạ từ chính hướng nó đi</h3>
+        <p>Cùng làn sóng AI vừa là <em>vũ khí</em> (Magic Studio, model riêng) vừa là <em>mối nguy</em> (khung chat nuốt cửa trước). Cách xử lý mâu thuẫn đó chuyển giao được sang sản phẩm khác.</p></div>
+    </div>
+    <div class="callout"><b>Tiêu chí chọn mốc xuyên suốt bài:</b> một mốc chỉ được vào bảng nếu đổi ít nhất một trong ba — <b>WHO</b> (segment) · <b>WHAT</b> (định nghĩa sản phẩm) · <b>HOW MUCH</b> (cách thu tiền). Feature chỉ làm đẹp trải nghiệm hiện có → loại.</div>
+  </div>
+  <div class="foot"><span>Canva — AI Product Teardown</span><span>03</span></div>
+</section>
+
+<!-- 4 · CP1 TIMELINE -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Checkpoint 1 · Timeline</div>
+  <h2>8 cột mốc đổi WHO · WHAT · HOW MUCH</h2>
+  <div class="rule"></div>
+  <div class="body">
+    <div class="tl">
+      <div class="n"><div class="when">09/2022</div><div class="what">Visual Worksuite</div>
+        <div class="why">Từ "app làm poster" thành bộ công cụ công việc. Đổi định nghĩa "tốt": không phải <i>đẹp</i> mà là <i>xong nhanh</i>.</div></div>
+      <div class="n"><div class="when">12/2022</div><div class="what">Magic Write</div>
+        <div class="why">1 tuần sau ChatGPT. Wrapper thuần, gọi API GPT-3. Lợi thế nằm ở <i>distribution</i>, không ở model.</div></div>
+      <div class="n"><div class="when">10/2023</div><div class="what">Magic Studio + Shield</div>
+        <div class="why">10 AI tool + bảo hiểm pháp lý + quỹ $200M creator. Với enterprise, "tốt" = <i>an toàn pháp lý</i>.</div></div>
+      <div class="n"><div class="when">03–05/2024</div><div class="what">Affinity + Enterprise</div>
+        <div class="why">Mua thay vì build (~$380M). Đổi segment ở <i>cả hai đầu</i> phổ người dùng cùng lúc.</div></div>
+      <div class="n"><div class="when">07–09/2024</div><div class="what">Leonardo → tăng giá</div>
+        <div class="why">Sở hữu cost của model, rồi thu tiền cho AI. Pricing là <i>một thí nghiệm</i>, không phải một con số.</div></div>
+      <div class="n"><div class="when">07/2025</div><div class="what">MCP / AI Connector</div>
+        <div class="why">Đảo chiều wrapper: thà làm <i>backend</i> trong chat của người khác còn hơn bị thay thế.</div></div>
+      <div class="n"><div class="when">30/10/2025</div><div class="what">Creative OS · Affinity free</div>
+        <div class="why">Commoditize your complement. Hạ giá tầng tool về 0 để bán tầng AI — x10 về <i>pricing</i>.</div></div>
+      <div class="n"><div class="when">16/04/2026</div><div class="what">Canva AI 2.0</div>
+        <div class="why">Model tự train, nhanh 7x rẻ 30x. Đổi định vị: "nền tảng AI có tool design".</div></div>
+    </div>
+    <div class="callout"><b>Mốc gây tranh cãi nhất — đã loại:</b> Canva Create 04/2025, được Canva gọi là "lần ra mắt lớn nhất từ trước tới nay". Chấm theo <b>độ ồn ào</b> thì phải chọn; chấm theo <b>nguyên lý</b> thì đó chỉ là phần tiếp của Magic Studio 2023 — không đổi ai trả tiền. Đây là chỗ bảng này khác một bản changelog.</div>
+  </div>
+  <div class="foot"><span>Canva — AI Product Teardown</span><span>04</span></div>
+</section>
+
+<!-- 5 · CP1 THREAD -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Checkpoint 1 · Sợi chỉ xuyên suốt</div>
+  <h2>Mỗi lần AI ăn mất một lớp moat, Canva dịch moat lên một tầng</h2>
+  <div class="rule"></div>
+  <div class="body">
+    <div class="ladder">
+      <div class="step s1"><div class="yr">2022</div><div class="layer">surface &amp; workflow</div><div class="moat">moat = chỗ user đổ data vào</div></div>
+      <div class="step s2"><div class="yr">2023</div><div class="layer">asset &amp; trust layer</div><div class="moat">moat = thư viện độc quyền + bảo hiểm pháp lý</div></div>
+      <div class="step s3"><div class="yr">2024</div><div class="layer">segment &amp; model</div><div class="moat">moat = sở hữu cả phổ user + sở hữu cost của model</div></div>
+      <div class="step s4"><div class="yr">2025</div><div class="layer">distribution</div><div class="moat">moat = editability trong khung chat của người khác</div></div>
+      <div class="step s5"><div class="yr">2026</div><div class="layer">own frontier models</div><div class="moat">moat = rẻ hơn / nhanh hơn frontier ở narrow task</div></div>
+    </div>
+    <div class="callout">Nguyên lý gốc: <b>hạ giá tầng bên dưới để bán tầng bên trên.</b> Miễn phí tool design để bán AI; mở MCP để bán editability.<br>
+    Cặp đối lập đẹp nhất: <b>12/2022 gọi API của OpenAI → 04/2026 tự train model rẻ hơn frontier 30 lần.</b></div>
+  </div>
+  <div class="foot"><span>Canva — AI Product Teardown</span><span>05</span></div>
+</section>
+
+<!-- 6 · CP2 SEGMENTS -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Checkpoint 2 · Tệp user &amp; JTBD</div>
+  <h2>Trục phân tích: trước / sau mốc AI <span style="color:var(--purple)">07/12/2022</span></h2>
+  <div class="rule"></div>
+  <div class="body">
+    <div class="cmp">
+      <div class="hd blank"></div>
+      <div class="hd a">Early adopters — TRƯỚC AI (2013 → 11/2022)</div>
+      <div class="hd b">Tệp hiện tại — SAU AI (12/2022 → nay)</div>
+
+      <div class="lb">Đặc điểm</div>
+      <div><b>Linh, 26t</b> — marketing viên <i>duy nhất</i> của shop online 5 người. Không học design, laptop không chạy nổi Photoshop. Quyết định mua trong 1 phút, không ai duyệt.</div>
+      <div><b>Hà, 34t</b> — Marketing Manager công ty 2.000 người. Người ký hợp đồng ≠ người dùng; IT/Legal đòi indemnity mới cho duyệt tool. <br><span style="color:var(--mute)">+ 2 tệp vệ tinh: <b>Minh</b> (designer pro, vào qua Affinity free) và <b>user "cửa sau"</b> (chưa từng mở canva.com).</span></div>
+
+      <div class="lb">JTBD chính</div>
+      <div>"Phải đăng bài hôm nay, không có designer, không có tiền thuê — giúp tôi ra tấm ảnh <b>không nghiệp dư trong 20 phút</b>."</div>
+      <div>"40 nhân viên ai cũng tự làm được ảnh — giúp tôi đảm bảo mọi asset <b>đúng brand và an toàn bản quyền</b> mà không phải duyệt từng file."</div>
+
+      <div class="lb">Cách cũ</div>
+      <div>PowerPoint / Paint · Adobe Spark Post · thuê Fiverr chờ 2–3 ngày · <b>hoặc không làm gì cả</b>.<br><span style="color:var(--mute)">Đối thủ thật không phải Photoshop — mà là <b>non-consumption</b>.</span></div>
+      <div>Xếp hàng chờ agency 3–5 ngày · Adobe CC theo seat · file rải rác Drive · luật sư review từng campaign.<br><span style="color:var(--mute)">Đối thủ thật giờ là <b>hàng chờ team design</b> + <b>khung chat</b>.</span></div>
+    </div>
+    <div class="callout"><b>Quan sát sắc nhất — JTBD bị lật ngược, không phải mở rộng:</b> job cũ là <b>enablement</b> ("giúp tôi <i>làm được</i>"), job mới là <b>governance</b> ("giúp tôi <i>kiểm soát</i> việc ai cũng làm được"). Job mới tồn tại <b>chính vì Canva giải job cũ quá tốt</b> — Canva tự tạo ra khách hàng tiếp theo của mình.</div>
+  </div>
+  <div class="foot"><span>Canva — AI Product Teardown</span><span>06</span></div>
+</section>
+
+<!-- 7 · CP2 FORCES -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Checkpoint 2 · Switching cost</div>
+  <h2>4 Forces — điều gì giữ user ở lại?</h2>
+  <div class="rule"></div>
+  <div class="body">
+    <div class="forces">
+      <div class="force f-push"><h4>PUSH — đẩy user rời đi</h4>
+        <p>Tăng giá Teams tới ~300% (09/2024) · PDF xuất ra ảnh raster chữ không chọn được · editor <i>"frankenstein's monster"</i> · Canva AI <i>"sort of sucks"</i>.</p></div>
+      <div class="force f-pull"><h4>PULL — hút sang chỗ khác</h4>
+        <p>Figma, Adobe Express, Kittl mọc lên <b>đúng lúc Canva tăng giá</b>. Mạnh nhất là <b>khung chat</b>: gõ prompt là có ảnh, không editor, không subscription.</p></div>
+      <div class="force f-anx"><h4>ANXIETY — lo khi rời → giữ lại</h4>
+        <p>Brand kit &amp; design history bị nhốt trong Canva · phải đào tạo lại cả tổ chức · mất Canva Shield (không đối thủ nào chào indemnity tương đương).</p></div>
+      <div class="force f-inr"><h4>INERTIA — quán tính giữ lại</h4>
+        <p>265M MAU → gửi link là đồng nghiệp mở được ngay · <b>100 triệu+ giáo viên &amp; học sinh dùng free</b> — gieo thói quen từ ghế nhà trường · memory library không có nút export.</p></div>
+    </div>
+    <div class="callout"><b>Bằng chứng thực nghiệm mạnh hơn mọi suy luận:</b> 10/2024 Canva <b>phải lùi giá</b> chỉ 5 tuần sau khi tăng, kèm cam kết "Pricing Promise" báo trước ≥60 ngày. Một công ty <b>không lùi giá nếu switching cost thật sự cao</b> → nhóm bị ảnh hưởng chủ yếu là <b>chủ doanh nghiệp nhỏ và giáo viên</b>, tệp có switching cost thấp nhất.<br>
+    → Đó là lý do Canva <b>bắt buộc</b> phải leo lên enterprise: đó là tệp duy nhất chịu được việc tăng giá.</div>
+  </div>
+  <div class="foot"><span>Canva — AI Product Teardown</span><span>07</span></div>
+</section>
+
+<!-- 8 · CP3 PREDICTIONS -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Checkpoint 3 · Dự đoán</div>
+  <h2>Ba dự đoán cho 08/2026 → 08/2027</h2>
+  <div class="rule"></div>
+  <div class="body">
+    <div class="pred">
+      <div class="p"><div class="top">01 · Mở rộng segment</div><div class="in">
+        <h3>Đóng kín vòng lặp tạo → đo → tự tối ưu cho ad creative</h3>
+        <p>Mở tệp mới: <b>performance marketer</b> — người bị chấm bằng ROAS/CPA chứ không phải bằng "đẹp".</p>
+        <p class="ev">Dẫn về §1: MagicBrief (06/2025, phân tích &gt;$6 tỷ ad spend, giá $22,5M) + MangoAI (02/2026). §2: JTBD lật sang "chứng minh hiệu quả".</p>
+      </div></div>
+      <div class="p"><div class="top">02 · Đe doạ Big Tech</div><div class="in">
+        <h3>Google ăn mòn tệp SMB &amp; giáo dục ngay trong Workspace</h3>
+        <p>Canva <b>không giành lại cửa trước</b> — bán thứ Google không có: brand governance + đo hiệu quả.</p>
+        <p class="ev">Đã hiện thực hoá: 30/06/2026 Gemini sinh nguyên deck <b>native &amp; sửa được</b> trong Slides, có cả gói Education → bắn thẳng vào moat <i>editability</i>.</p>
+      </div></div>
+      <div class="p"><div class="top">03 · Mô hình kiếm tiền</div><div class="in">
+        <h3>Giữ giá per-seat, dời đòn bẩy sang tiêu thụ AI</h3>
+        <p>Tăng ARR trước IPO đến từ <b>AI consumption per user</b>, không từ giá mỗi ghế.</p>
+        <p class="ev">Dẫn về §1: "Pricing Promise" 10/2024 tự trói tay (báo trước ≥60 ngày). §2: tệp SMB đã chứng minh sẵn sàng bỏ đi. Credit 3 bậc + AI Pass đã chạy.</p>
+      </div></div>
+    </div>
+    <div class="callout">Mỗi dự đoán bắt buộc <b>dẫn ngược được về ít nhất 1 cột mốc ở §1 và 1 nhận định về tệp user ở §2</b> — nhóm đã loại các dự đoán chỉ có suy luận mà không có mốc hoặc tiền đã chi.</div>
+  </div>
+  <div class="foot"><span>Canva — AI Product Teardown</span><span>08</span></div>
+</section>
+
+<!-- 9 · CP3 CHALLENGE -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Checkpoint 3 · Câu hỏi phản biện</div>
+  <h2>Tự tin nhất là dự đoán nào — và giả định nào làm nó gãy?</h2>
+  <div class="rule"></div>
+  <div class="body">
+    <div class="grid2">
+      <div>
+        <div class="card tint" style="margin-bottom:.20in">
+          <span class="tag">Tự tin nhất</span>
+          <h3>Dự đoán 1 — vòng lặp ad performance</h3>
+          <p>Tiêu chí chọn: <b>"có tiền đã tiêu"</b>, không theo cảm giác.</p>
+        </div>
+        <ul>
+          <li>Dự đoán duy nhất được chống bằng <b>tiền đã chi hai lần cùng một hướng</b>, cách nhau 8 tháng. M&amp;A khó đảo ngược hơn roadmap.</li>
+          <li>Ý định <b>nói ra công khai</b>: "full-funnel — ideation, creation, measurement, iteration".</li>
+          <li>Hai dự đoán còn lại phụ thuộc <b>yếu tố ngoài tầm Canva</b>: tốc độ Google (DĐ2), thời điểm IPO (DĐ3).</li>
+        </ul>
+      </div>
+      <div>
+        <div class="card" style="border-color:rgba(255,95,95,.4);background:rgba(255,95,95,.05);margin-bottom:.20in">
+          <span class="tag" style="color:var(--coral)">Giả định làm nó gãy</span>
+          <h3>"Canva giữ được quyền truy cập dữ liệu hiệu quả cấp từng creative từ Meta / Google / TikTok"</h3>
+          <p>Nửa <i>đo lường</i> chạy bằng API của chính các nền tảng <b>vừa cấp dữ liệu vừa là đối thủ</b>. Siết API → Canva chỉ còn nửa <i>tạo ra</i>, quay về chỗ cũ.</p>
+        </div>
+        <ul>
+          <li><b style="color:var(--green)">Đúng hướng →</b> Canva công bố partnership với Meta/Google Ads; MagicBrief thành tab trong editor; có SKU marketing riêng.</li>
+          <li><b style="color:var(--coral)">Sai hướng →</b> MagicBrief lặng lẽ thu hẹp; Canva chỉ đo được kênh own-media — dấu hiệu mất đường vào dữ liệu paid.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Canva — AI Product Teardown</span><span>09</span></div>
+</section>
+
+<!-- 10 · CP4 AI LOG -->
+<section class="slide">
+  <div class="eyebrow"><span class="dot"></span>Checkpoint 4 · AI Log</div>
+  <h2>AI làm gì — nhóm kiểm chứng lại thế nào</h2>
+  <div class="rule"></div>
+  <div class="body">
+    <div class="ailog">
+      <div class="lg ai"><h3>AI làm</h3>
+        <ul>
+          <li>Crawl &amp; sơ chế dữ liệu thô: <b>3 thread Hacker News, 656 comment</b>, trải hai bên mốc AI 12/2022</li>
+          <li>Tra cứu mốc M&amp;A, pricing, phát biểu lãnh đạo, thông cáo báo chí tiếng Anh</li>
+          <li>Dựng danh mục nguồn &amp; hỗ trợ cấu trúc bảng, diễn đạt</li>
+        </ul>
+      </div>
+      <div class="lg us"><h3>Nhóm quyết định</h3>
+        <ul>
+          <li><b>Bộ lọc WHO/WHAT/HOW MUCH</b> và việc chọn 8 mốc; gộp hai cụm 2024</li>
+          <li><b>Chọn trục phân tích §2</b> theo mốc AI 07/12/2022</li>
+          <li><b>Khung 4 Forces</b> + dùng cú lùi giá 10/2024 làm bằng chứng thực nghiệm</li>
+          <li>Chất vấn và loại các dự đoán không dẫn được về §1–§2</li>
+        </ul>
+      </div>
+    </div>
+    <div class="rej">
+      <div><b>Bác 01</b>AI đề xuất trục "2013 vs 2026". Nhóm bác — không nối được về §1, lạc đề teardown AI.</div>
+      <div><b>Bác 02</b>AI trả số từ trang SEO ("98% Fortune 500", "$47.000/công ty"). Loại hết vì không truy được nguồn gốc.</div>
+      <div><b>Bác 03</b>AI trích review Trustpilot/G2/Gartner như đã đọc. Kiểm lại: cả ba trả <b>HTTP 403</b> → hạ xuống mức tham khảo.</div>
+    </div>
+    <div class="callout" style="margin-top:.18in"><b>Nếu bỏ phần AI làm ra, nhóm còn tự giải thích được không?</b> Có — toàn bộ khung nguyên lý (commoditize your complement · 4 Forces · M&amp;A là fast-forward button) là do nhóm xây. Không có AI thì chỉ tốn thêm thời gian đọc thủ công, kết luận không đổi.</div>
+  </div>
+  <div class="foot"><span>Canva — AI Product Teardown</span><span>10</span></div>
+</section>
+
+<!-- 11 · CLOSING -->
+<section class="slide close">
+  <div class="eyebrow"><span class="dot"></span>Kết luận</div>
+  <h2>Canva không thắng bằng tính năng AI tốt hơn — mà bằng việc <span style="background:linear-gradient(90deg,var(--cyan),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent">liên tục dời moat lên tầng mà AI chưa với tới</span>.</h2>
+  <div class="rule"></div>
+  <div class="body">
+    <div class="grid3" style="margin-top:.10in">
+      <div class="card tint"><h3>Bài học 1</h3><p>Ở giai đoạn 0, <b>wrapper là chiến lược hợp lý</b>. Lợi thế nằm ở distribution, không ở model — nhưng phải thoát wrapper trước khi bị commoditize.</p></div>
+      <div class="card tint"><h3>Bài học 2</h3><p>Khi AI làm job cũ trở nên dễ, <b>job mới không phải "làm ra" mà là "kiểm soát"</b>. Giải quá tốt một job sẽ tự sinh ra khách hàng tiếp theo.</p></div>
+      <div class="card tint"><h3>Bài học 3</h3><p><b>Pricing là một thí nghiệm.</b> Cú lùi giá 10/2024 đo được điều mà không phân tích nào đo được: switching cost thật của từng tệp.</p></div>
+    </div>
+    <div class="callout"><b>Rủi ro lớn nhất phía trước:</b> MCP giữ được <i>editability</i> làm moat nhưng <b>không giữ được cửa trước</b>. Khi thói quen "mở Canva" bị thay bằng "gõ vào chat", <b>Inertia</b> — lực giữ chân mạnh nhất — chính là thứ bị bào mòn đầu tiên.</div>
+  </div>
+  <div class="foot"><span>Nhóm JCungDuoc · Lớp D303</span><span>11</span></div>
+</section>
+
+</body>
+</html>
